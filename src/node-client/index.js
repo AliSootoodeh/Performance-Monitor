@@ -11,12 +11,14 @@ socket.on('connect', () => {
             break;
         }
     }
+    socket.emit('clientAuth', '123456789qwerty');
+    
     let perfDataInterval = setInterval(() => {
         performanceData()
             .then((performanceData) => {
                 socket.emit('perfData', performanceData)
             })
-    }, 1000);
+    }, 1000);    
 })
 
 const performanceData = function () {
