@@ -1,4 +1,23 @@
 const os = require('os');
+const io = require('socket.io-client');
+let socket = io('http://127.0.0.1:8181');
+
+socket.on('connect', () => {
+    const nI = os.networkInterfaces();
+    let macA;
+    for (let key in nI) {
+        if (!nI[key][0].internal) {
+            macA = nI[key][0].mac;
+            break;
+        }
+    }
+    let perfDataInterval = setInterval(() => {
+        performanceData()
+            .then((performanceData) => {
+                socket.emit('perfData', performanceData)
+            })
+    }, 1000);
+})
 
 const performanceData = function () {
     return new Promise(async (resolve, reject) => {
