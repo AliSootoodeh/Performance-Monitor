@@ -13,12 +13,23 @@ socket.on('connect', () => {
     }
     socket.emit('clientAuth', '123456789qwerty');
     
+    performanceData()
+            .then((performanceData) => {
+                performanceData.macA = macA;
+                socket.emit('initPrefData', performanceData);
+            })
+
     let perfDataInterval = setInterval(() => {
         performanceData()
             .then((performanceData) => {
                 socket.emit('perfData', performanceData)
             })
     }, 1000);    
+
+    socket.on('disconnect', () => {
+        clearInterval(perfDataInterval);
+    })
+
 })
 
 const performanceData = function () {

@@ -1,5 +1,9 @@
-function socketMain(io, socket) {
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://127.0.0.1/performance', {useNewUrlParser : true, useMongoClient: true});
+const Machine = require('../models/machine')
 
+function socketMain(io, socket) {
+    let macA;
    // valid different clients (node or react)
     socket.on('clientAuth', (key) => {
 
@@ -13,6 +17,9 @@ function socketMain(io, socket) {
         }
     })
 
+    socket.on('initPrefData', (data) => {
+        macA = data.macA;
+    })
 
     socket.on('perfData', (data) => {
         console.log(data)
