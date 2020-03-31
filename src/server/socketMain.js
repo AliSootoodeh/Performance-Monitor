@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://127.0.0.1/performance', {useNewUrlParser : true, useMongoClient: true});
-const Machine = require('../models/machine')
+const { checkAndAdd } = require('../functions/checkAndAdd');
 
 function socketMain(io, socket) {
     let macA;
@@ -17,8 +17,9 @@ function socketMain(io, socket) {
         }
     })
 
-    socket.on('initPrefData', (data) => {
+    socket.on('initPrefData', async (data) => {
         macA = data.macA;
+        const mongooseResponse = await checkAndAdd(data);
     })
 
     socket.on('perfData', (data) => {
