@@ -23,7 +23,8 @@ function socketMain(io, socket) {
     })
 
     socket.on('perfData', (data) => {
-        console.log(data)
+        console.log(data);
+        io.to('ui').emit('data', data)
     })
 }
 
